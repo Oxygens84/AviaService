@@ -24,8 +24,7 @@
 @implementation MainViewController
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
-    
+    [super viewDidLoad];    
     [self configBackground];
     [self configGreetingLabel];
     [self configEnterButtom];
@@ -50,6 +49,15 @@
     [self.view addSubview: self.greetingLabel];
 }
 
+- (void) configUser {
+    self.userName = [[UITextField alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT/2-100, SCREEN_WIDTH, 50)];
+    [self.userName setPlaceholder: @"INTER your name"];
+    [self.userName setTextColor:[UIColor redColor]];
+    [self.userName setTextAlignment: NSTextAlignmentCenter];
+    [self.view addSubview: self.userName];
+}
+
+
 - (void) configEnterButtom {
     self.enterButton = [[UIButton alloc] initWithFrame:CGRectMake(10, SCREEN_HEIGHT/2+50, SCREEN_WIDTH-20, 50)];
     [self.enterButton setTitle: @"ENTER" forState: UIControlStateNormal];
@@ -60,14 +68,6 @@
     [self.view addSubview: self.enterButton];
 }
 
-- (void) configUser {
-    self.userName = [[UITextField alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT/2-100, SCREEN_WIDTH, 50)];
-    [self.userName setPlaceholder: @"INTER your name"];
-    [self.userName setTextColor:[UIColor redColor]];
-    [self.userName setTextAlignment: NSTextAlignmentCenter];
-    [self.view addSubview: self.userName];
-}
-
 - (void) enterButtonTap {
     [self.enterButton setBackgroundColor:[UIColor colorWithRed:150.0/255.0 green:35.0/255.0 blue:10.0/255.0 alpha:1.0]];
     if (self.userName.text != nil) {
@@ -76,6 +76,7 @@
     }
     [self openSecondViewController];
 }
+
 
 - (void)openSecondViewController
 {
