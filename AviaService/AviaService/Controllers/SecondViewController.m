@@ -24,7 +24,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     [self configBackground];
     [self configText];
     [self configBackButtom];
