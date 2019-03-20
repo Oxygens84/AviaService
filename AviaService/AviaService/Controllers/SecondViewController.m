@@ -15,6 +15,7 @@
 
 @interface SecondViewController ()
 
+@property (nonatomic, strong) UIImageView *backgroundImage;
 @property (nonatomic, strong) UILabel *someText;
 @property (nonatomic, strong) UIButton *backButton;
 
@@ -27,24 +28,29 @@
     [self configBackground];
     [self configText];
     [self configBackButtom];
-    
 }
 
 - (void) configBackground {
-    [self.view setBackgroundColor: [UIColor colorWithRed:100.0/255.0 green:135.0/255.0 blue:191.0/255.0 alpha:1.0]];
+    //[self.view setBackgroundColor: [UIColor colorWithRed:100.0/255.0 green:135.0/255.0 blue:191.0/255.0 alpha:1.0]];
+    CGRect frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    self.backgroundImage = [[UIImageView alloc] initWithFrame: frame];
+    self.backgroundImage.image = [UIImage imageNamed:@"background"];
+    self.backgroundImage.contentMode = UIViewContentModeScaleAspectFill;
+    self.backgroundImage.backgroundColor = [UIColor blackColor];
+    [self.view addSubview:self.backgroundImage];
 }
 
 - (void) configText {
     self.someText = [[UILabel alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT/2-150, SCREEN_WIDTH, 50)];
     [self.someText setText: @"It's the second screen"];
-    [self.someText setTextColor: [UIColor whiteColor]];
+    [self.someText setTextColor: [UIColor redColor]];
     [self.someText setTextAlignment: NSTextAlignmentCenter];
     [self.view addSubview: self.someText];
 }
 
 - (void) configBackButtom {
     self.backButton = [[UIButton alloc] initWithFrame:CGRectMake(10, SCREEN_HEIGHT/2+50, SCREEN_WIDTH-20, 50)];
-    [self.backButton setTitle: @"BACK TO LOGIN" forState: UIControlStateNormal];
+    [self.backButton setTitle: @"BACK" forState: UIControlStateNormal];
     [self.backButton setTitleColor: [UIColor redColor] forState: UIControlStateNormal];
     [self.backButton setBackgroundColor:[UIColor whiteColor]];
     [self.backButton.layer setCornerRadius:5];
@@ -64,6 +70,5 @@
     [self.navigationController pushViewController:anotherViewController animated:YES];
     [self presentViewController:anotherViewController animated:YES completion:nil];
 }
-
 
 @end
