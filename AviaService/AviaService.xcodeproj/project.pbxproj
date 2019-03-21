@@ -12,6 +12,7 @@
 		51624A30223ED1300059A9BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 51624A2F223ED1300059A9BE /* Assets.xcassets */; };
 		51624A36223ED1300059A9BE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 51624A35223ED1300059A9BE /* main.m */; };
 		51624A40223ED3D90059A9BE /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51624A3F223ED3D90059A9BE /* SecondViewController.m */; };
+		51624A4C2242C48C0059A9BE /* UIMainTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 51624A4B2242C48C0059A9BE /* UIMainTableViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +26,8 @@
 		51624A35223ED1300059A9BE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		51624A3E223ED3D90059A9BE /* SecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
 		51624A3F223ED3D90059A9BE /* SecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
+		51624A4A2242C0180059A9BE /* UIMainTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIMainTableViewCell.h; sourceTree = "<group>"; };
+		51624A4B2242C48C0059A9BE /* UIMainTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIMainTableViewCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +84,8 @@
 				51624A2A223ED12E0059A9BE /* MainViewController.m */,
 				51624A3E223ED3D90059A9BE /* SecondViewController.h */,
 				51624A3F223ED3D90059A9BE /* SecondViewController.m */,
+				51624A4A2242C0180059A9BE /* UIMainTableViewCell.h */,
+				51624A4B2242C48C0059A9BE /* UIMainTableViewCell.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -165,6 +170,7 @@
 				51624A2B223ED12E0059A9BE /* MainViewController.m in Sources */,
 				51624A36223ED1300059A9BE /* main.m in Sources */,
 				51624A40223ED3D90059A9BE /* SecondViewController.m in Sources */,
+				51624A4C2242C48C0059A9BE /* UIMainTableViewCell.m in Sources */,
 				51624A28223ED12E0059A9BE /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

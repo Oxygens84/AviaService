@@ -8,82 +8,76 @@
 
 #import "MainViewController.h"
 #import "SecondViewController.h"
+#import "UIMainTableViewCell.h"
 
 #define SCREEN_WIDTH [UIScreen mainScreen].bounds.size.width
 #define SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
+#define CELL_ID @"CellIdentifier"
 
-@interface MainViewController ()
+@interface MainViewController()
 
-@property (nonatomic, strong) UIImageView *backgroundImage;
+
 @property (nonatomic, strong) UILabel *greetingLabel;
 @property (nonatomic, strong) UIButton *enterButton;
-@property (nonatomic, strong) UITextField *userName;
+@property (strong, nonnull) UITableView *tableView;
+@property (strong, nonnull) NSMutableArray *elements;
 
 @end
 
 @implementation MainViewController
 
 - (void)viewDidLoad {
-    [super viewDidLoad];    
-    [self configBackground];
-    [self configGreetingLabel];
-    [self configEnterButtom];
-    [self configUser];
+    [super viewDidLoad];
+    self.elements = [NSMutableArray arrayWithObjects:@1, @2, @3, @4, @5, nil];
     
+    self.tableView = [[UITableView alloc] initWithFrame: self.view.bounds style: UITableViewStylePlain];
+    self.tableView.dataSource = self;
+    
+    self.title = @"fff";
+    
+    [self.view addSubview: self.tableView];
 }
 
-- (void) configBackground {
-    CGRect frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-    self.backgroundImage = [[UIImageView alloc] initWithFrame: frame];
-    self.backgroundImage.image = [UIImage imageNamed:@"background"];
-    self.backgroundImage.contentMode = UIViewContentModeScaleAspectFill;
-    self.backgroundImage.backgroundColor = [UIColor blackColor];
-    [self.view addSubview:self.backgroundImage];
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.elements.count;
 }
 
-- (void) configGreetingLabel {
-    self.greetingLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT/2-150, SCREEN_WIDTH, 50)];
-    [self.greetingLabel setText: @"Hello, dear guest!"];
-    [self.greetingLabel setTextColor: [UIColor blueColor]];
-    [self.greetingLabel setTextAlignment: NSTextAlignmentCenter];
-    [self.view addSubview: self.greetingLabel];
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    return @"Header";
 }
 
-- (void) configUser {
-    self.userName = [[UITextField alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT/2-100, SCREEN_WIDTH, 50)];
-    [self.userName setPlaceholder: @"INTER your name"];
-    [self.userName setTextColor:[UIColor redColor]];
-    [self.userName setTextAlignment: NSTextAlignmentCenter];
-    [self.view addSubview: self.userName];
-}
-
-
-- (void) configEnterButtom {
-    self.enterButton = [[UIButton alloc] initWithFrame:CGRectMake(10, SCREEN_HEIGHT/2+50, SCREEN_WIDTH-20, 50)];
-    [self.enterButton setTitle: @"ENTER" forState: UIControlStateNormal];
-    [self.enterButton setTitleColor: [UIColor whiteColor] forState: UIControlStateNormal];
-    [self.enterButton setBackgroundColor:[UIColor colorWithRed:100.0/255.0 green:135.0/255.0 blue:191.0/255.0 alpha:1.0]];
-    [self.enterButton.layer setCornerRadius:5];
-    [self.enterButton addTarget: self action: @selector(enterButtonTap) forControlEvents: UIControlEventTouchUpInside];
-    [self.view addSubview: self.enterButton];
-}
-
-- (void) enterButtonTap {
-    [self.enterButton setBackgroundColor:[UIColor colorWithRed:150.0/255.0 green:35.0/255.0 blue:10.0/255.0 alpha:1.0]];
-    if (self.userName.text != nil) {
-        NSString *personGreeting = [NSString stringWithFormat:@"Hello, dear %@", self.userName.text];
-        [self.greetingLabel setText: personGreeting];
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UIMainTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: CELL_ID];
+    if (!cell) {
+        cell = [[UIMainTableViewCell alloc] initWithStyle: UITableViewCellStyleDefault reuseIdentifier: CELL_ID];
     }
-    [self openSecondViewController];
+    cell.leftLabel.text = [NSString stringWithFormat:@"Cell title %@", self.elements[indexPath.row]];
+    [cell.enterButton addTarget: self action: @selector(enterCellTap) forControlEvents: UIControlEventTouchUpInside];
+    
+    return cell;
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+    return [NSString stringWithFormat:@"%@ %ld", @"Elements ", self.elements.count];
+}
 
-- (void)openSecondViewController
-{
-    SecondViewController *anotherViewController = [[SecondViewController alloc] init];
-    [self.navigationController showViewController:anotherViewController sender:self];
-    [self.navigationController pushViewController:anotherViewController animated:YES];
-    [self presentViewController:anotherViewController animated:YES completion:nil];
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self.elements removeObjectAtIndex:indexPath.row];
+    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+}
+
+- (void) enterCellTap {
+    //SecondViewController *anotherViewController = [[SecondViewController alloc] init];
+    //[self.navigationController pushViewController:anotherViewController animated:YES];
+    //[self presentViewController:anotherViewController animated:YES completion:nil];
+    [self displayMessage: @"Thanks for watching. ありがとう"];
+}
+
+- (void)displayMessage:(NSString *)message {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Details" message:message preferredStyle:(UIAlertControllerStyleAlert)];
+    UIAlertAction *action = [UIAlertAction actionWithTitle:@"OK" style:(UIAlertActionStyleDefault) handler:^(UIAlertAction * _Nonnull action) {}];
+    [alertController addAction:action];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 @end
