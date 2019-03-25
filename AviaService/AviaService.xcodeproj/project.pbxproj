@@ -13,6 +13,7 @@
 		51624A36223ED1300059A9BE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 51624A35223ED1300059A9BE /* main.m */; };
 		51624A40223ED3D90059A9BE /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51624A3F223ED3D90059A9BE /* SecondViewController.m */; };
 		51624A4C2242C48C0059A9BE /* UIMainTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 51624A4B2242C48C0059A9BE /* UIMainTableViewCell.m */; };
+		51B65BDC2247BF4A00D88243 /* APIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 51B65BDB2247BF4A00D88243 /* APIManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,8 @@
 		51624A3F223ED3D90059A9BE /* SecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
 		51624A4A2242C0180059A9BE /* UIMainTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIMainTableViewCell.h; sourceTree = "<group>"; };
 		51624A4B2242C48C0059A9BE /* UIMainTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIMainTableViewCell.m; sourceTree = "<group>"; };
+		51B65BDA2247BF3700D88243 /* APIManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = APIManager.h; sourceTree = "<group>"; };
+		51B65BDB2247BF4A00D88243 /* APIManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = APIManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +64,7 @@
 			isa = PBXGroup;
 			children = (
 				51624A44223F083D0059A9BE /* App */,
+				51B65BD92247BF0900D88243 /* Network */,
 				51624A42223F07E40059A9BE /* Models */,
 				51624A43223F08260059A9BE /* Controllers */,
 				51624A2F223ED1300059A9BE /* Assets.xcassets */,
@@ -97,6 +101,15 @@
 				51624A27223ED12E0059A9BE /* AppDelegate.m */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		51B65BD92247BF0900D88243 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				51B65BDA2247BF3700D88243 /* APIManager.h */,
+				51B65BDB2247BF4A00D88243 /* APIManager.m */,
+			);
+			path = Network;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -168,6 +181,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				51624A2B223ED12E0059A9BE /* MainViewController.m in Sources */,
+				51B65BDC2247BF4A00D88243 /* APIManager.m in Sources */,
 				51624A36223ED1300059A9BE /* main.m in Sources */,
 				51624A40223ED3D90059A9BE /* SecondViewController.m in Sources */,
 				51624A4C2242C48C0059A9BE /* UIMainTableViewCell.m in Sources */,

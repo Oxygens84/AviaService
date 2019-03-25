@@ -32,6 +32,7 @@
 
 - (void) configLeftLabel {
     self.leftLabel = [[UILabel alloc] initWithFrame:CGRectMake(OFFSET, 0.0, SCREEN_WIDTH / 3.0 * 2 - OFFSET, 44.0)];
+    //self.leftLabel.numberOfLines = 2;
     self.leftLabel.textAlignment = NSTextAlignmentLeft;
     self.leftLabel.textColor = [UIColor blueColor];
     [self.contentView addSubview: self.leftLabel];
