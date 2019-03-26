@@ -10,5 +10,7 @@
 
 @interface SecondViewController : UIViewController
 
+- (instancetype)initWithText:(NSString*) text;
+
 @end
 

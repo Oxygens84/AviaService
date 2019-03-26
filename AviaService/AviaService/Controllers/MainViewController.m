@@ -9,6 +9,7 @@
 #import "MainViewController.h"
 #import "SecondViewController.h"
 #import "UIMainTableViewCell.h"
+#import "APIManager.h"
 
 #define SCREEN_WIDTH [UIScreen mainScreen].bounds.size.width
 #define SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
@@ -16,8 +17,6 @@
 
 @interface MainViewController()
 
-
-@property (nonatomic, strong) UILabel *greetingLabel;
 @property (nonatomic, strong) UIButton *enterButton;
 @property (strong, nonnull) UITableView *tableView;
 @property (strong, nonnull) NSMutableArray *elements;
@@ -28,56 +27,56 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.elements = [NSMutableArray arrayWithObjects:@1, @2, @3, @4, @5, nil];
+    self.elements = [NSMutableArray arrayWithObjects:@"No data found", nil];
+    [[APIManager sharedInstance] newsWithCompletion:^(NSMutableArray *articles){
+        NSLog(@"%@", articles);
+        if (articles) {
+            self.elements = articles;
+            [self.tableView reloadData];
+        }
+    }];
     
     self.tableView = [[UITableView alloc] initWithFrame: self.view.bounds style: UITableViewStylePlain];
     self.tableView.dataSource = self;
-    
-    self.title = @"fff";
-    
+
+    self.title = @"BITCOIN NEWS";
+
     [self.view addSubview: self.tableView];
+
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.elements.count;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return @"Header";
-}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UIMainTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: CELL_ID];
     if (!cell) {
         cell = [[UIMainTableViewCell alloc] initWithStyle: UITableViewCellStyleDefault reuseIdentifier: CELL_ID];
     }
-    cell.leftLabel.text = [NSString stringWithFormat:@"Cell title %@", self.elements[indexPath.row]];
+    cell.leftLabel.text = [NSString stringWithFormat:@"%@", self.elements[indexPath.row]];
+    //TODO cell tapped instead of button
     [cell.enterButton addTarget: self action: @selector(enterCellTap) forControlEvents: UIControlEventTouchUpInside];
-    
     return cell;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
-    return [NSString stringWithFormat:@"%@ %ld", @"Elements ", self.elements.count];
-}
+//-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    NSString *labelText = [self.elements objectAtIndex:indexPath.row];
+//    return [self heightForText:labelText];
+//}
+
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.elements removeObjectAtIndex:indexPath.row];
     [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
 
-- (void) enterCellTap {
-    //SecondViewController *anotherViewController = [[SecondViewController alloc] init];
-    //[self.navigationController pushViewController:anotherViewController animated:YES];
-    //[self presentViewController:anotherViewController animated:YES completion:nil];
-    [self displayMessage: @"Thanks for watching. ありがとう"];
-}
-
-- (void)displayMessage:(NSString *)message {
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Details" message:message preferredStyle:(UIAlertControllerStyleAlert)];
-    UIAlertAction *action = [UIAlertAction actionWithTitle:@"OK" style:(UIAlertActionStyleDefault) handler:^(UIAlertAction * _Nonnull action) {}];
-    [alertController addAction:action];
-    [self presentViewController:alertController animated:YES completion:nil];
+- (void) enterCellTap{
+    SecondViewController *anotherViewController = [[SecondViewController alloc] initWithText: @"More info"];
+    [self.navigationController pushViewController:anotherViewController animated:YES];
+    [anotherViewController setTitle:@"NEWS details"];
 }
 
 @end
