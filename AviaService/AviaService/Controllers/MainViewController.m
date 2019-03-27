@@ -27,6 +27,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.tableView = [[UITableView alloc] initWithFrame: self.view.bounds style: UITableViewStylePlain];
+    self.title = [NSString stringWithFormat:@"%@ %@", @"BITCOIN NEWS ", [APIManager getCurrentDate]];
+
+    self.tableView.dataSource=self;
+    self.tableView.delegate=self;
+    
+    self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.elements = [NSMutableArray arrayWithObjects:@"No data found", nil];
     [[APIManager sharedInstance] newsWithCompletion:^(NSMutableArray *articles){
         NSLog(@"%@", articles);
@@ -35,14 +43,7 @@
             [self.tableView reloadData];
         }
     }];
-    
-    self.tableView = [[UITableView alloc] initWithFrame: self.view.bounds style: UITableViewStylePlain];
-    self.tableView.dataSource = self;
-
-    self.title = @"BITCOIN NEWS";
-
     [self.view addSubview: self.tableView];
-
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -56,27 +57,45 @@
         cell = [[UIMainTableViewCell alloc] initWithStyle: UITableViewCellStyleDefault reuseIdentifier: CELL_ID];
     }
     cell.leftLabel.text = [NSString stringWithFormat:@"%@", self.elements[indexPath.row]];
-    //TODO cell tapped instead of button
-    [cell.enterButton addTarget: self action: @selector(enterCellTap) forControlEvents: UIControlEventTouchUpInside];
+    cell.leftLabel.numberOfLines = 2;
+    [cell.leftLabel sizeToFit];
+    //[cell.enterButton addTarget: self action: @selector(enterCellTap) forControlEvents: UIControlEventTouchUpInside];
     return cell;
 }
 
-//-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    NSString *labelText = [self.elements objectAtIndex:indexPath.row];
-//    return [self heightForText:labelText];
+//- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+//    [self.elements removeObjectAtIndex:indexPath.row];
+//    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 //}
 
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self.elements removeObjectAtIndex:indexPath.row];
-    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+- (CGFloat)heightForText:(NSString *)bodyText
+{
+    UIFont *cellFont = [UIFont systemFontOfSize:17];
+    CGSize constraintSize = CGSizeMake(200, MAXFLOAT);
+    CGSize labelSize = [bodyText sizeWithFont:cellFont constrainedToSize:constraintSize lineBreakMode:UILineBreakModeWordWrap];
+    CGFloat height = labelSize.height + 10;
+    return height;
 }
 
-- (void) enterCellTap{
-    SecondViewController *anotherViewController = [[SecondViewController alloc] initWithText: @"More info"];
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *labelText = [self.elements objectAtIndex:indexPath.row];
+    return [self heightForText:labelText];
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    SecondViewController *anotherViewController = [[SecondViewController alloc] init];
     [self.navigationController pushViewController:anotherViewController animated:YES];
     [anotherViewController setTitle:@"NEWS details"];
+    anotherViewController.news = self.elements[indexPath.row];
 }
+
+//- (void) enterCellTap{
+//    SecondViewController *anotherViewController = [[SecondViewController alloc] init];
+//    [self.navigationController pushViewController:anotherViewController animated:YES];
+//    [anotherViewController setTitle:@"NEWS details"];
+//    anotherViewController.news = @"sdsd";
+//}
 
 @end

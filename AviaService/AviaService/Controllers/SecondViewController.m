@@ -11,7 +11,7 @@
 
 #define SCREEN_WIDTH [UIScreen mainScreen].bounds.size.width
 #define SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
-
+#define OFFSET 10.0
 
 @interface SecondViewController ()
 
@@ -22,12 +22,6 @@
 @end
 
 @implementation SecondViewController
-
-- (instancetype)initWithText:(NSString*) text{
-    self = [super init];
-    self.someText.text = text;
-    return self;
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -41,15 +35,16 @@
 }
 
 - (void) configText {
-    self.someText = [[UILabel alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT/2-150, SCREEN_WIDTH, 50)];
-    [self.someText setText: @"It's the second screen"];
+    self.someText = [[UILabel alloc] initWithFrame:CGRectMake(OFFSET, OFFSET, SCREEN_WIDTH-OFFSET, SCREEN_HEIGHT-OFFSET-150)];
+    [self.someText setTextAlignment: NSTextAlignmentLeft];
+    self.someText.numberOfLines = 10;
+    [self.someText setText: self.news];
     [self.someText setTextColor: [UIColor whiteColor]];
-    [self.someText setTextAlignment: NSTextAlignmentCenter];
     [self.view addSubview: self.someText];
 }
 
 - (void) configBackButtom {
-    self.backButton = [[UIButton alloc] initWithFrame:CGRectMake(10, SCREEN_HEIGHT/2+50, SCREEN_WIDTH-20, 50)];
+    self.backButton = [[UIButton alloc] initWithFrame:CGRectMake(OFFSET, SCREEN_HEIGHT-100, SCREEN_WIDTH-OFFSET, 50)];
     [self.backButton setTitle: @"CLICK ME" forState: UIControlStateNormal];
     [self.backButton setTitleColor: [UIColor redColor] forState: UIControlStateNormal];
     [self.backButton setBackgroundColor:[UIColor whiteColor]];

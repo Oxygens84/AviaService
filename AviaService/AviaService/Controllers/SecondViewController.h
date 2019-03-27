@@ -10,7 +10,7 @@
 
 @interface SecondViewController : UIViewController
 
-- (instancetype)initWithText:(NSString*) text;
+@property (nonatomic, strong) NSString *news;
 
 @end
 
