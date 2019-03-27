@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface UIMainTableViewCell: UITableViewCell
+@interface UIMainTableViewCell: UITableViewCell 
 
 @property (nonatomic, strong) UILabel *leftLabel;
 @property (nonatomic, strong) UIButton *enterButton;
