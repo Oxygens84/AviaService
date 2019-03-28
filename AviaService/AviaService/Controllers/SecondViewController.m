@@ -6,8 +6,11 @@
 //  Copyright © 2019 Oxana Lobysheva. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
 #import "SecondViewController.h"
 #import "MainViewController.h"
+#import "LocationService.h"
+#import "MapViewController.h"
 
 #define SCREEN_WIDTH [UIScreen mainScreen].bounds.size.width
 #define SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
@@ -45,7 +48,7 @@
 
 - (void) configBackButtom {
     self.backButton = [[UIButton alloc] initWithFrame:CGRectMake(OFFSET, SCREEN_HEIGHT-100, SCREEN_WIDTH-OFFSET, 50)];
-    [self.backButton setTitle: @"CLICK ME" forState: UIControlStateNormal];
+    [self.backButton setTitle: @"MAP" forState: UIControlStateNormal];
     [self.backButton setTitleColor: [UIColor redColor] forState: UIControlStateNormal];
     [self.backButton setBackgroundColor:[UIColor whiteColor]];
     [self.backButton.layer setCornerRadius:5];
@@ -61,7 +64,9 @@
 }
 
 - (void) clickButtonTap {
-    [self displayMessage: @"Thanks for watching. ありがとう"];
+    //[self displayMessage: @"Thanks for watching. ありがとう"];
+    MapViewController *anotherViewController = [[MapViewController alloc] init];
+    [self.navigationController pushViewController:anotherViewController animated:YES];
 }
 
 - (void)openMainViewController
@@ -70,6 +75,15 @@
     [self.navigationController showViewController:anotherViewController sender:self];
     [self.navigationController pushViewController:anotherViewController animated:YES];
     [self presentViewController:anotherViewController animated:YES completion:nil];
+}
+
+- (void)start {
+    CLLocationManager *locationManager = [[CLLocationManager alloc] init];
+    locationManager.delegate = self;
+    locationManager.desiredAccuracy = kCLLocationAccuracyKilometer;
+    locationManager.distanceFilter = 500;
+    
+    [locationManager startUpdatingLocation];
 }
 
 @end

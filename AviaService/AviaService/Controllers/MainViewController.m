@@ -79,8 +79,9 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *labelText = [self.elements objectAtIndex:indexPath.row];
-    return [self heightForText:labelText];
+    //NSString *labelText = [self.elements objectAtIndex:indexPath.row];
+    //return [self heightForText:labelText];
+    return 60;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
