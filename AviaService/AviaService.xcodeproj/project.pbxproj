@@ -11,11 +11,13 @@
 		51624A2B223ED12E0059A9BE /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51624A2A223ED12E0059A9BE /* MainViewController.m */; };
 		51624A30223ED1300059A9BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 51624A2F223ED1300059A9BE /* Assets.xcassets */; };
 		51624A36223ED1300059A9BE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 51624A35223ED1300059A9BE /* main.m */; };
-		51624A40223ED3D90059A9BE /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51624A3F223ED3D90059A9BE /* SecondViewController.m */; };
+		51624A40223ED3D90059A9BE /* NewsDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51624A3F223ED3D90059A9BE /* NewsDetailsViewController.m */; };
 		51624A4C2242C48C0059A9BE /* UIMainTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 51624A4B2242C48C0059A9BE /* UIMainTableViewCell.m */; };
 		51B65BDC2247BF4A00D88243 /* APIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 51B65BDB2247BF4A00D88243 /* APIManager.m */; };
 		51B65BDF224C8A7600D88243 /* LocationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 51B65BDE224C8A7600D88243 /* LocationService.m */; };
 		51B65BE5224C8BE400D88243 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51B65BE4224C8BE400D88243 /* MapViewController.m */; };
+		51B65BE82251808600D88243 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51B65BE72251808600D88243 /* SearchViewController.m */; };
+		51B65BEB2251900700D88243 /* TabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51B65BEA2251900700D88243 /* TabBarController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,8 +29,8 @@
 		51624A2F223ED1300059A9BE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		51624A34223ED1300059A9BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		51624A35223ED1300059A9BE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		51624A3E223ED3D90059A9BE /* SecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
-		51624A3F223ED3D90059A9BE /* SecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
+		51624A3E223ED3D90059A9BE /* NewsDetailsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewsDetailsViewController.h; sourceTree = "<group>"; };
+		51624A3F223ED3D90059A9BE /* NewsDetailsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewsDetailsViewController.m; sourceTree = "<group>"; };
 		51624A4A2242C0180059A9BE /* UIMainTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIMainTableViewCell.h; sourceTree = "<group>"; };
 		51624A4B2242C48C0059A9BE /* UIMainTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIMainTableViewCell.m; sourceTree = "<group>"; };
 		51B65BDA2247BF3700D88243 /* APIManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = APIManager.h; sourceTree = "<group>"; };
@@ -37,6 +39,10 @@
 		51B65BDE224C8A7600D88243 /* LocationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocationService.m; sourceTree = "<group>"; };
 		51B65BE3224C8BE400D88243 /* MapViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		51B65BE4224C8BE400D88243 /* MapViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
+		51B65BE62251808600D88243 /* SearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
+		51B65BE72251808600D88243 /* SearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
+		51B65BE92251900700D88243 /* TabBarController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TabBarController.h; sourceTree = "<group>"; };
+		51B65BEA2251900700D88243 /* TabBarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TabBarController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,10 +100,14 @@
 				51624A2A223ED12E0059A9BE /* MainViewController.m */,
 				51624A4A2242C0180059A9BE /* UIMainTableViewCell.h */,
 				51624A4B2242C48C0059A9BE /* UIMainTableViewCell.m */,
-				51624A3E223ED3D90059A9BE /* SecondViewController.h */,
-				51624A3F223ED3D90059A9BE /* SecondViewController.m */,
+				51B65BE62251808600D88243 /* SearchViewController.h */,
+				51B65BE72251808600D88243 /* SearchViewController.m */,
+				51624A3E223ED3D90059A9BE /* NewsDetailsViewController.h */,
+				51624A3F223ED3D90059A9BE /* NewsDetailsViewController.m */,
 				51B65BE3224C8BE400D88243 /* MapViewController.h */,
 				51B65BE4224C8BE400D88243 /* MapViewController.m */,
+				51B65BE92251900700D88243 /* TabBarController.h */,
+				51B65BEA2251900700D88243 /* TabBarController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -194,8 +204,10 @@
 				51B65BDC2247BF4A00D88243 /* APIManager.m in Sources */,
 				51624A36223ED1300059A9BE /* main.m in Sources */,
 				51B65BE5224C8BE400D88243 /* MapViewController.m in Sources */,
-				51624A40223ED3D90059A9BE /* SecondViewController.m in Sources */,
+				51B65BE82251808600D88243 /* SearchViewController.m in Sources */,
+				51624A40223ED3D90059A9BE /* NewsDetailsViewController.m in Sources */,
 				51624A4C2242C48C0059A9BE /* UIMainTableViewCell.m in Sources */,
+				51B65BEB2251900700D88243 /* TabBarController.m in Sources */,
 				51B65BDF224C8A7600D88243 /* LocationService.m in Sources */,
 				51624A28223ED12E0059A9BE /* AppDelegate.m in Sources */,
 			);

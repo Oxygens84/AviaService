@@ -7,7 +7,8 @@
 //
 
 #import "MainViewController.h"
-#import "SecondViewController.h"
+#import "SearchViewController.h"
+#import "NewsDetailsViewController.h"
 #import "UIMainTableViewCell.h"
 #import "APIManager.h"
 
@@ -15,13 +16,17 @@
 #define SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
 #define CELL_ID @"CellIdentifier"
 
-@interface MainViewController()
+@interface MainViewController() <UISearchResultsUpdating>
 
 @property (nonatomic, strong) UIButton *enterButton;
 @property (strong, nonnull) UITableView *tableView;
 @property (strong, nonnull) NSMutableArray *elements;
 
+@property (nonatomic, strong) UISearchController *searchController;
+@property (nonatomic, strong) SearchViewController *resultsController;
+
 @end
+
 
 @implementation MainViewController
 
@@ -36,6 +41,12 @@
     
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.elements = [NSMutableArray arrayWithObjects:@"No data found", nil];
+    
+    self.resultsController = [[SearchViewController alloc] init];
+    self.searchController = [[UISearchController alloc] initWithSearchResultsController: self.resultsController];
+    self.searchController.searchResultsUpdater = self;
+    self.tableView.tableHeaderView = self.searchController.searchBar;
+    
     [[APIManager sharedInstance] newsWithCompletion:^(NSMutableArray *articles){
         NSLog(@"%@", articles);
         if (articles) {
@@ -44,6 +55,14 @@
         }
     }];
     [self.view addSubview: self.tableView];
+    
+}
+
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
+    if (searchController.searchBar.text) {
+        self.resultsController.results = [self.elements filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@", searchController.searchBar.text]];
+        [self.resultsController update];
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -59,7 +78,6 @@
     cell.leftLabel.text = [NSString stringWithFormat:@"%@", self.elements[indexPath.row]];
     cell.leftLabel.numberOfLines = 2;
     [cell.leftLabel sizeToFit];
-    //[cell.enterButton addTarget: self action: @selector(enterCellTap) forControlEvents: UIControlEventTouchUpInside];
     return cell;
 }
 
@@ -68,14 +86,14 @@
 //    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 //}
 
-- (CGFloat)heightForText:(NSString *)bodyText
-{
-    UIFont *cellFont = [UIFont systemFontOfSize:17];
-    CGSize constraintSize = CGSizeMake(200, MAXFLOAT);
-    CGSize labelSize = [bodyText sizeWithFont:cellFont constrainedToSize:constraintSize lineBreakMode:UILineBreakModeWordWrap];
-    CGFloat height = labelSize.height + 10;
-    return height;
-}
+//- (CGFloat)heightForText:(NSString *)bodyText
+//{
+//    UIFont *cellFont = [UIFont systemFontOfSize:17];
+//    CGSize constraintSize = CGSizeMake(200, MAXFLOAT);
+//    CGSize labelSize = [bodyText sizeWithFont:cellFont constrainedToSize:constraintSize lineBreakMode:UILineBreakModeWordWrap];
+//    CGFloat height = labelSize.height + 10;
+//    return height;
+//}
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -86,17 +104,10 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    SecondViewController *anotherViewController = [[SecondViewController alloc] init];
+    NewsDetailsViewController *anotherViewController = [[NewsDetailsViewController alloc] init];
     [self.navigationController pushViewController:anotherViewController animated:YES];
     [anotherViewController setTitle:@"NEWS details"];
     anotherViewController.news = self.elements[indexPath.row];
 }
-
-//- (void) enterCellTap{
-//    SecondViewController *anotherViewController = [[SecondViewController alloc] init];
-//    [self.navigationController pushViewController:anotherViewController animated:YES];
-//    [anotherViewController setTitle:@"NEWS details"];
-//    anotherViewController.news = @"sdsd";
-//}
 
 @end
