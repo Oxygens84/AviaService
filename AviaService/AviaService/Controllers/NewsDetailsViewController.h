@@ -1,5 +1,5 @@
 //
-//  SecondViewController.h
+//  NewsDetailsViewController.h
 //  AviaService
 //
 //  Created by Oxana Lobysheva on 17/03/2019.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SecondViewController : UIViewController
+@interface NewsDetailsViewController : UIViewController
 
 @property (nonatomic, strong) NSString *news;
 

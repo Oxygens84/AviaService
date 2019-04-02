@@ -18,11 +18,18 @@
 
 @implementation MapViewController
 
+- (instancetype)init
+{
+    self = [super initWithNibName:nil bundle:nil];
+    if (self) {
+        self.title = @"MAP";
+    }
+    return self;
+}
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.title = @"MAP";
-    
     self.mapView = [[MKMapView alloc] initWithFrame:self.view.bounds];
     self.mapView.showsUserLocation = YES;
     [self.view addSubview:_mapView];
@@ -38,14 +45,14 @@
 }
 
 - (void)dataLoadedSuccessfully {
-    _locationService = [[LocationService alloc] init];
+    self.locationService = [[LocationService alloc] init];
 }
 
 - (void)updateCurrentLocation:(NSNotification *)notification {
     CLLocation *currentLocation = notification.object;
     
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(currentLocation.coordinate, 1000000, 1000000);
-    [_mapView setRegion: region animated: YES];
+    [self.mapView setRegion: region animated: YES];
     
     if (currentLocation) {
 

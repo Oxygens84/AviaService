@@ -1,5 +1,5 @@
 //
-//  SecondViewController.m
+//  NewsDetailsViewController.m
 //  AviaService
 //
 //  Created by Oxana Lobysheva on 17/03/2019.
@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SecondViewController.h"
+#import "NewsDetailsViewController.h"
 #import "MainViewController.h"
 #import "LocationService.h"
 #import "MapViewController.h"
@@ -16,7 +16,7 @@
 #define SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
 #define OFFSET 10.0
 
-@interface SecondViewController ()
+@interface NewsDetailsViewController ()
 
 //@property (nonatomic, strong) UIImageView *backgroundImage;
 @property (nonatomic, strong) UILabel *someText;
@@ -24,13 +24,13 @@
 
 @end
 
-@implementation SecondViewController
+@implementation NewsDetailsViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self configBackground];
     [self configText];
-    [self configBackButtom];
+    [self configClickMeButtom];
 }
 
 - (void) configBackground {
@@ -38,7 +38,7 @@
 }
 
 - (void) configText {
-    self.someText = [[UILabel alloc] initWithFrame:CGRectMake(OFFSET, OFFSET, SCREEN_WIDTH-OFFSET, SCREEN_HEIGHT-OFFSET-150)];
+    self.someText = [[UILabel alloc] initWithFrame:CGRectMake(OFFSET, OFFSET, SCREEN_WIDTH-(2*OFFSET), SCREEN_HEIGHT-OFFSET-150)];
     [self.someText setTextAlignment: NSTextAlignmentLeft];
     self.someText.numberOfLines = 10;
     [self.someText setText: self.news];
@@ -46,9 +46,9 @@
     [self.view addSubview: self.someText];
 }
 
-- (void) configBackButtom {
-    self.backButton = [[UIButton alloc] initWithFrame:CGRectMake(OFFSET, SCREEN_HEIGHT-100, SCREEN_WIDTH-OFFSET, 50)];
-    [self.backButton setTitle: @"MAP" forState: UIControlStateNormal];
+- (void) configClickMeButtom {
+    self.backButton = [[UIButton alloc] initWithFrame:CGRectMake(OFFSET, SCREEN_HEIGHT-150, SCREEN_WIDTH-(2*OFFSET), 50)];
+    [self.backButton setTitle: @"CLICK ME" forState: UIControlStateNormal];
     [self.backButton setTitleColor: [UIColor redColor] forState: UIControlStateNormal];
     [self.backButton setBackgroundColor:[UIColor whiteColor]];
     [self.backButton.layer setCornerRadius:5];
@@ -64,9 +64,7 @@
 }
 
 - (void) clickButtonTap {
-    //[self displayMessage: @"Thanks for watching. ありがとう"];
-    MapViewController *anotherViewController = [[MapViewController alloc] init];
-    [self.navigationController pushViewController:anotherViewController animated:YES];
+    [self displayMessage: @"Thanks for watching. ありがとう"];
 }
 
 - (void)openMainViewController
