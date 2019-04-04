@@ -10,11 +10,13 @@
 #import "UIMainTableViewCell.h"
 #import "NewsDetailsViewController.h"
 #import "APIManager.h"
+#import "CoreDataHelper.h"
 
 #define CELL_ID @"ResultsIdentifier"
 
-@interface SearchViewController ()
-
+@interface SearchViewController () {
+    BOOL isFavorites;
+}
 @end
 
 @implementation SearchViewController
@@ -37,7 +39,11 @@
     if (!cell) {
         cell = [[UIMainTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CELL_ID ];
     }
-    cell.textLabel.text = [NSString stringWithFormat:@"%@", self.results[indexPath.row]];
+    if (isFavorites) {
+        cell.favoriteNews = [self.results objectAtIndex:indexPath.row];
+    } else {
+        cell.leftLabel.text = [NSString stringWithFormat:@"%@", self.results[indexPath.row]];
+    }
     cell.leftLabel.numberOfLines = 2;
     [cell.leftLabel sizeToFit];
     return cell;
