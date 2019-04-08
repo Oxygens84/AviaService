@@ -18,7 +18,6 @@
 
 @interface NewsDetailsViewController ()
 
-//@property (nonatomic, strong) UIImageView *backgroundImage;
 @property (nonatomic, strong) UILabel *someText;
 @property (nonatomic, strong) UIButton *backButton;
 

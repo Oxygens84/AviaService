@@ -24,17 +24,14 @@
     if (self)
     {
         [self configLeftLabel];
-        //[self configEnterButtom];
-        
     }
     return self;
 }
 
 - (void) configLeftLabel {
-    //self.leftLabel = [[UILabel alloc] initWithFrame:CGRectMake(OFFSET, 0.0, SCREEN_WIDTH / 3.0 * 2 - OFFSET, OFFSET*2)];
     self.leftLabel = [[UILabel alloc] initWithFrame:CGRectMake(OFFSET, 0.0, SCREEN_WIDTH - (OFFSET*2), OFFSET*2)];
     self.leftLabel.textAlignment = NSTextAlignmentLeft;
-    self.leftLabel.textColor = [UIColor blueColor];
+    self.leftLabel.textColor = [UIColor blackColor];
     [self.contentView addSubview: self.leftLabel];
 }
 
@@ -45,6 +42,11 @@
     [self.enterButton setBackgroundColor:[UIColor colorWithRed:100.0/255.0 green:135.0/255.0 blue:191.0/255.0 alpha:1.0]];
     [self.enterButton.layer setCornerRadius:5];
     [self.contentView addSubview: self.enterButton];
+}
+
+- (void)setFavoriteNews:(FavoriteNews *)favoriteNews {
+    //self.favoriteNews = favoriteNews;
+    self.leftLabel.text = [NSString stringWithFormat:@"♥ %@", favoriteNews.title];
 }
 
 @end

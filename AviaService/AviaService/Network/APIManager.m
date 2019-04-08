@@ -32,6 +32,7 @@
     NSString *url = [NSString stringWithFormat:@"%@/%@%@", API_URL_PART1, [APIManager getCurrentDate], API_URL_PART2];
     [self load: url withCompletion:^(id  _Nullable result) {
         NSDictionary *response = result;
+        NSLog(@"%@", response);
         if (response) {
             NSDictionary *json = [response valueForKey:@"articles"];
             NSMutableArray *value = [json valueForKey: @"title"];
@@ -39,6 +40,7 @@
                 completion(value);
             });
         }
+        // TODO add: content urlToImage  url  source.name publishedAt
     }];
 }
 

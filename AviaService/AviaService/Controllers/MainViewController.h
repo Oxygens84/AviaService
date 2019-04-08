@@ -10,5 +10,8 @@
 
 @interface MainViewController: UIViewController <UITableViewDataSource,UITableViewDelegate>
 
+- (instancetype)initWithNews:(NSMutableArray *)news;
+- (instancetype)initFavoriteNewsController;
+
 @end
 
