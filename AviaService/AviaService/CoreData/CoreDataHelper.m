@@ -7,6 +7,7 @@
 //
 
 #import "CoreDataHelper.h"
+#import "News.h"
 
 @interface CoreDataHelper ()
 @property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
@@ -52,25 +53,32 @@
     }
 }
 
-- (FavoriteNews *)favoriteFromTicket:(NSString *)news_title {
+- (FavoriteNews *)favoriteFromTicket:(News *)news {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"FavoriteNews"];
-    request.predicate = [NSPredicate predicateWithFormat:@"title == %@", news_title];
+    request.predicate = [NSPredicate predicateWithFormat:@"title == %@", news.news_title];
     return [[_managedObjectContext executeFetchRequest:request error:nil] firstObject];
 }
 
-- (BOOL)isFavorite:(NSString *)news_title {
-    return [self favoriteFromTicket:news_title] != nil;
+- (BOOL)isFavorite:(News *)news {
+    return [self favoriteFromTicket:news] != nil;
 }
 
-- (void)addToFavorite:(NSString *)news_title {
+- (void)addToFavorite:(News *)news {
     FavoriteNews *favorite = [NSEntityDescription insertNewObjectForEntityForName:@"FavoriteNews" inManagedObjectContext:_managedObjectContext];
-    favorite.title = news_title;
+    favorite.title = news.news_title;
+    favorite.content = news.news_content;
+    if (![news.news_urlToImage isEqual:[NSNull null]]) {
+        favorite.urlToImage = news.news_urlToImage;
+    }
+    if (![news.news_source isEqual:[NSNull null]]) {
+        favorite.source = news.news_source;
+    }
     //favorite.created = [NSDate date];
     [self save];
 }
 
-- (void)removeFromFavorite:(NSString *)news_title {
-    FavoriteNews *favorite = [self favoriteFromTicket:news_title];
+- (void)removeFromFavorite:(News *)news {
+    FavoriteNews *favorite = [self favoriteFromTicket:news];
     if (favorite) {
         [_managedObjectContext deleteObject:favorite];
         [self save];

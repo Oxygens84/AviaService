@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "News.h"
 
 @interface NewsDetailsViewController : UIViewController
 
-@property (nonatomic, strong) NSString *news;
+@property (nonatomic, strong) News *someNews;
 
 @end
 

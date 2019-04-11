@@ -12,6 +12,8 @@
 #import "UIMainTableViewCell.h"
 #import "APIManager.h"
 #import "CoreDataHelper.h"
+#import "News.h"
+#import "ProgressView.h"
 
 #define SCREEN_WIDTH [UIScreen mainScreen].bounds.size.width
 #define SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
@@ -22,6 +24,7 @@
 @property (nonatomic, strong) UIButton *enterButton;
 @property (strong, nonnull) UITableView *tableView;
 @property (strong, nonnull) NSMutableArray *elements;
+@property (strong, nonnull) UIImageView* twitter;
 
 @property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic, strong) SearchViewController *resultsController;
@@ -64,18 +67,16 @@
     if (isFavorites) {
         self.title = @"Favorites";
     } else {
-        self.title = [NSString stringWithFormat:@"%@ %@", @"BITCOIN NEWS ", [APIManager getCurrentDate]];
+        self.title = [NSString stringWithFormat:@"%@ %@", @"NEWS ", [APIManager getCurrentDate]];
     }
     
     self.tableView.dataSource=self;
     self.tableView.delegate=self;
     
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    //self.elements = [NSMutableArray arrayWithObjects:@"No data found", nil];
     
     if (!isFavorites) {
         [[APIManager sharedInstance] newsWithCompletion:^(NSMutableArray *articles){
-            NSLog(@"%@", articles);
             if (articles) {
                 self.elements = articles;
                 [self.tableView reloadData];
@@ -95,24 +96,37 @@
     [super viewDidAppear:animated];
     
     if (isFavorites) {
-        //self.navigationController.navigationBar.prefersLargeTitles = YES;
         self.elements = [[CoreDataHelper sharedInstance] favorites];
         [self.tableView reloadData];
     } else {
         [[APIManager sharedInstance] newsWithCompletion:^(NSMutableArray *articles){
-            NSLog(@"%@", articles);
             if (articles) {
                 self.elements = articles;
                 [self.tableView reloadData];
             }
         }];
     }
+    
+    [UIView transitionWithView:self.view duration:2
+                       options:UIViewAnimationOptionTransitionCurlDown
+                    animations:^ {}
+                    completion:^(BOOL finished){
+                        NSLog(@"Animations completed.");
+                    }];
 }
 
 
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
     if (searchController.searchBar.text) {
-        self.resultsController.results = [self.elements filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@", searchController.searchBar.text]];
+        NSMutableArray *tempArr=[[NSMutableArray alloc] init];
+        for (int i=0; i < self.elements.count; i++) {
+            News *element = [self.elements objectAtIndex:i];
+            if ([[element.news_title uppercaseString] containsString: [searchController.searchBar.text uppercaseString]]) {
+                [tempArr addObject:element];
+            }
+        }
+        self.resultsController.results = tempArr;
+        //self.resultsController.results = [self.elements filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@", searchController.searchBar.text]];
         [self.resultsController update];
     }
 }
@@ -130,20 +144,21 @@
     if (isFavorites) {
         cell.favoriteNews = [self.elements objectAtIndex:indexPath.row];
     } else {
-        cell.leftLabel.text = [NSString stringWithFormat:@"%@", self.elements[indexPath.row]];
+        News *element = self.elements[indexPath.row];
+        cell.title.text = [NSString stringWithFormat:@"%@", element.news_title];
+        if (![element.news_urlToImage isEqual:[NSNull null]]) {
+            NSURL *url = [NSURL URLWithString:element.news_urlToImage];
+            NSData *imageData = [[NSData alloc] initWithContentsOfURL:url];
+            cell.image.image = [[UIImage alloc] initWithData:imageData];
+        } else {
+            [cell.image setAlpha:0];
+        }
     }    
-    cell.leftLabel.numberOfLines = 2;
-    [cell.leftLabel sizeToFit];
+    cell.title.numberOfLines = 2;
+    [cell.title sizeToFit];
     return cell;
 
 }
-
-/*
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self.elements removeObjectAtIndex:indexPath.row];
-    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-}
- */
 
 /*
 - (CGFloat)heightForText:(NSString *)bodyText
@@ -158,41 +173,61 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //NSString *labelText = [self.elements objectAtIndex:indexPath.row];
-    //return [self heightForText:labelText];
-    return 60;
+    if (isFavorites)
+        return 60+20;
+    
+    News *element = [self.elements objectAtIndex:indexPath.row];
+    if (![element.news_urlToImage isEqual:[NSNull null]]) {
+        return 60 + SCREEN_WIDTH - (20);
+    }
+    return 60 + 20;
 }
 
-/*
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NewsDetailsViewController *anotherViewController = [[NewsDetailsViewController alloc] init];
-    [self.navigationController pushViewController:anotherViewController animated:YES];
-    [anotherViewController setTitle:@"NEWS details"];
-    anotherViewController.news = self.elements[indexPath.row];
-}
- */
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (isFavorites) return;
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Actions" message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
-    UIAlertAction *favoriteAction;
-    //TODO delete favorites when the news left from the main window
-    if ([[CoreDataHelper sharedInstance] isFavorite: [self.elements objectAtIndex:indexPath.row]]) {
-        favoriteAction = [UIAlertAction actionWithTitle:@"Delete from favorites" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-            [[CoreDataHelper sharedInstance] removeFromFavorite:[self.elements objectAtIndex:indexPath.row]];
-        }];
-    } else {
-        favoriteAction = [UIAlertAction actionWithTitle:@"Add to favorites" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            [[CoreDataHelper sharedInstance] addToFavorite:[self.elements objectAtIndex:indexPath.row]];
-        }];
-    }
     
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"CLOSE" style:UIAlertActionStyleCancel handler:nil];
-    [alertController addAction:favoriteAction];
-    [alertController addAction:cancelAction];
-    [self presentViewController:alertController animated:YES completion:nil];
+    //TODO actions for favorites
+    if (!isFavorites) {
+        
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"ACTIONS" message:@"Select an action for the news:" preferredStyle:UIAlertControllerStyleActionSheet];
+        
+        UIAlertAction *favoriteAction;
+        
+        if ([[CoreDataHelper sharedInstance] isFavorite: [self.elements objectAtIndex:indexPath.row]]
+            //|| (isFavorites)
+            ) {
+            favoriteAction = [UIAlertAction actionWithTitle:@"Delete from favorites" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+                [[CoreDataHelper sharedInstance] removeFromFavorite:[self.elements objectAtIndex:indexPath.row]];
+                if (self->isFavorites) {
+                    [self.tableView reloadData];
+                }
+            }];
+        } else {
+            favoriteAction = [UIAlertAction actionWithTitle:@"Add to favorites" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [[CoreDataHelper sharedInstance] addToFavorite:[self.elements objectAtIndex:indexPath.row]];
+            }];
+        }
+        
+        UIAlertAction *detailAction;
+        detailAction = [UIAlertAction actionWithTitle:@"Details" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            NewsDetailsViewController *anotherViewController = [[NewsDetailsViewController alloc] init];
+            [self.navigationController pushViewController:anotherViewController animated:YES];
+            [anotherViewController setTitle:@"NEWS details"];
+            News *someNews = [self.elements objectAtIndex:indexPath.row];
+            anotherViewController.someNews = someNews;
+            [UIView transitionFromView:self.view
+                                toView:anotherViewController.view
+                              duration:1.50f
+                               options:UIViewAnimationOptionTransitionCurlDown
+                            completion:nil];
+        }];
+        
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"CANCEL" style:UIAlertActionStyleCancel handler:nil];
+        [alertController addAction:favoriteAction];
+        [alertController addAction:detailAction];
+        [alertController addAction:cancelAction];
+        [self presentViewController:alertController animated:YES completion:nil];
+    }
 }
-
 
 @end

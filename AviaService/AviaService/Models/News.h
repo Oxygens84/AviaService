@@ -15,5 +15,10 @@
 @property (nonatomic, strong) NSString *news_urlToImage;
 @property (nonatomic, strong) NSString *news_source;
 
+- (instancetype)initWith: (NSString *)title
+                 content: (NSString *)content
+                   image: (NSString *)image
+                  source: (NSString *)source;
+
 //content urlToImage  url  source.name publishedAt
 @end

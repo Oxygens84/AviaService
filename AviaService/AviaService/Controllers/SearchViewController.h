@@ -10,7 +10,7 @@
 
 @interface SearchViewController : UITableViewController
 
-@property (nonatomic, strong) NSArray *results;
+@property (strong, nonnull) NSMutableArray *results;
 
 -(void)update;
 
