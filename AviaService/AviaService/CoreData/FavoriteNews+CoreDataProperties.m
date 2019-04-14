@@ -16,5 +16,8 @@
 }
 
 @dynamic title;
+@dynamic content;
+@dynamic urlToImage;
+@dynamic source;
 
 @end

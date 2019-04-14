@@ -11,7 +11,8 @@
 
 @interface UIMainTableViewCell: UITableViewCell 
 
-@property (nonatomic, strong) UILabel *leftLabel;
+@property (nonatomic, strong) UILabel *title;
+@property (nonatomic, strong) UIImageView *image;
 @property (nonatomic, strong) UIButton *enterButton;
 @property (nonatomic, strong) FavoriteNews *favoriteNews;
 

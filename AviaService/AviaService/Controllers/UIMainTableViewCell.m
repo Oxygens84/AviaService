@@ -23,16 +23,22 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self)
     {
-        [self configLeftLabel];
+        [self configTitle];
+        [self configImage];
     }
     return self;
 }
 
-- (void) configLeftLabel {
-    self.leftLabel = [[UILabel alloc] initWithFrame:CGRectMake(OFFSET, 0.0, SCREEN_WIDTH - (OFFSET*2), OFFSET*2)];
-    self.leftLabel.textAlignment = NSTextAlignmentLeft;
-    self.leftLabel.textColor = [UIColor blackColor];
-    [self.contentView addSubview: self.leftLabel];
+- (void) configTitle {
+    self.title = [[UILabel alloc] initWithFrame:CGRectMake(OFFSET, OFFSET, SCREEN_WIDTH - (OFFSET*2), OFFSET*2)];
+    self.title.textAlignment = NSTextAlignmentLeft;
+    self.title.textColor = [UIColor blackColor];
+    [self.contentView addSubview: self.title];
+}
+
+- (void) configImage {
+    self.image = [[UIImageView alloc] initWithFrame:CGRectMake(OFFSET, 60.0 + OFFSET , SCREEN_WIDTH - (OFFSET*2), SCREEN_WIDTH - (OFFSET*2))];
+    [self.contentView addSubview: self.image];
 }
 
 - (void) configEnterButtom {
@@ -46,7 +52,8 @@
 
 - (void)setFavoriteNews:(FavoriteNews *)favoriteNews {
     //self.favoriteNews = favoriteNews;
-    self.leftLabel.text = [NSString stringWithFormat:@"♥ %@", favoriteNews.title];
+    self.title.text = [NSString stringWithFormat:@"♥ %@", favoriteNews.title];
+    [self.image setAlpha:0];
 }
 
 @end

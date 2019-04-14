@@ -11,6 +11,8 @@
 #import "MainViewController.h"
 #import "LocationService.h"
 #import "MapViewController.h"
+#import "CoreDataHelper.h"
+#import "News.h"
 
 #define SCREEN_WIDTH [UIScreen mainScreen].bounds.size.width
 #define SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
@@ -18,8 +20,9 @@
 
 @interface NewsDetailsViewController ()
 
-@property (nonatomic, strong) UILabel *someText;
-@property (nonatomic, strong) UIButton *backButton;
+@property (nonatomic, strong) UILabel *newsContent;
+@property (nonatomic, strong) UILabel *newsSource;
+@property (nonatomic, strong) UIButton *completeReadingButton;
 
 @end
 
@@ -29,7 +32,8 @@
     [super viewDidLoad];
     [self configBackground];
     [self configText];
-    [self configClickMeButtom];
+    [self configSource];
+    //[self configClickMeButtom];
 }
 
 - (void) configBackground {
@@ -37,22 +41,39 @@
 }
 
 - (void) configText {
-    self.someText = [[UILabel alloc] initWithFrame:CGRectMake(OFFSET, OFFSET, SCREEN_WIDTH-(2*OFFSET), SCREEN_HEIGHT-OFFSET-150)];
-    [self.someText setTextAlignment: NSTextAlignmentLeft];
-    self.someText.numberOfLines = 10;
-    [self.someText setText: self.news];
-    [self.someText setTextColor: [UIColor whiteColor]];
-    [self.view addSubview: self.someText];
+    self.newsContent = [[UILabel alloc] initWithFrame:CGRectMake(OFFSET, OFFSET, SCREEN_WIDTH-(2*OFFSET), SCREEN_HEIGHT-OFFSET-150)];
+    [self.newsContent setTextAlignment: NSTextAlignmentLeft];
+    self.newsContent.numberOfLines = 15;
+    if (![self.someNews.news_content isEqual:[NSNull null]]) {
+        [self.newsContent setText: self.someNews.news_content];
+    } else {
+        [self.newsContent setText: self.someNews.news_title];
+    }
+    [self.newsContent setTextColor: [UIColor whiteColor]];
+    [self.view addSubview: self.newsContent];
+}
+
+- (void) configSource {
+    self.newsSource = [[UILabel alloc] initWithFrame:CGRectMake(OFFSET, SCREEN_HEIGHT-150, SCREEN_WIDTH-(2*OFFSET), 50)];
+    [self.newsSource setTextAlignment: NSTextAlignmentRight];
+    self.newsSource.numberOfLines = 1;
+    if (![self.someNews.news_source isEqual:[NSNull null]]) {
+        [self.newsSource setText: self.someNews.news_source];
+    } else {
+        [self.newsSource setText: @"Anonymous source"];
+    }
+    [self.newsSource setTextColor: [UIColor whiteColor]];
+    [self.view addSubview: self.newsSource];
 }
 
 - (void) configClickMeButtom {
-    self.backButton = [[UIButton alloc] initWithFrame:CGRectMake(OFFSET, SCREEN_HEIGHT-150, SCREEN_WIDTH-(2*OFFSET), 50)];
-    [self.backButton setTitle: @"CLICK ME" forState: UIControlStateNormal];
-    [self.backButton setTitleColor: [UIColor redColor] forState: UIControlStateNormal];
-    [self.backButton setBackgroundColor:[UIColor whiteColor]];
-    [self.backButton.layer setCornerRadius:5];
-    [self.backButton addTarget: self action: @selector(clickButtonTap) forControlEvents: UIControlEventTouchUpInside];
-    [self.view addSubview: self.backButton];
+    self.completeReadingButton = [[UIButton alloc] initWithFrame:CGRectMake(OFFSET, SCREEN_HEIGHT-90, SCREEN_WIDTH-(2*OFFSET), 50)];
+    [self.completeReadingButton setTitle: @"I've read this news!" forState: UIControlStateNormal];
+    [self.completeReadingButton setTitleColor: [UIColor redColor] forState: UIControlStateNormal];
+    [self.completeReadingButton setBackgroundColor:[UIColor whiteColor]];
+    [self.completeReadingButton.layer setCornerRadius:5];
+    [self.completeReadingButton addTarget: self action: @selector(clickButtonTap) forControlEvents: UIControlEventTouchUpInside];
+    [self.view addSubview: self.completeReadingButton];
 }
 
 - (void)displayMessage:(NSString *)message {
@@ -63,7 +84,8 @@
 }
 
 - (void) clickButtonTap {
-    [self displayMessage: @"Thanks for watching. ありがとう"];
+    [[CoreDataHelper sharedInstance] removeFromFavorite: self.someNews];
+    [_completeReadingButton setAlpha:0];
 }
 
 - (void)openMainViewController

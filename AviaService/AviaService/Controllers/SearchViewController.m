@@ -11,7 +11,10 @@
 #import "NewsDetailsViewController.h"
 #import "APIManager.h"
 #import "CoreDataHelper.h"
+#import "News.h"
 
+#define SCREEN_WIDTH [UIScreen mainScreen].bounds.size.width
+#define SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
 #define CELL_ID @"ResultsIdentifier"
 
 @interface SearchViewController () {
@@ -42,10 +45,18 @@
     if (isFavorites) {
         cell.favoriteNews = [self.results objectAtIndex:indexPath.row];
     } else {
-        cell.leftLabel.text = [NSString stringWithFormat:@"%@", self.results[indexPath.row]];
+        News *element = self.results[indexPath.row];
+        cell.title.text = [NSString stringWithFormat:@"%@", element.news_title];
+        if (![element.news_urlToImage isEqual:[NSNull null]]) {
+            NSURL *url = [NSURL URLWithString:element.news_urlToImage];
+            NSData *imageData = [[NSData alloc] initWithContentsOfURL:url];
+            cell.image.image = [[UIImage alloc] initWithData:imageData];
+        } else {
+            [cell.image setAlpha:0];
+        }        
     }
-    cell.leftLabel.numberOfLines = 2;
-    [cell.leftLabel sizeToFit];
+    cell.title.numberOfLines = 2;
+    [cell.title sizeToFit];
     return cell;
 }
 
@@ -54,11 +65,15 @@
     NewsDetailsViewController *anotherViewController = [[NewsDetailsViewController alloc] init];
     [self.navigationController pushViewController:anotherViewController animated:YES];
     [anotherViewController setTitle:@"NEWS details"];
-    anotherViewController.news = self.results[indexPath.row];
+    anotherViewController.someNews = self.results[indexPath.row];
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    News *element = [self.results objectAtIndex:indexPath.row];
+    if (![element.news_urlToImage isEqual:[NSNull null]]) {
+        return 60 + SCREEN_WIDTH - (20*2);
+    }
     return 60;
 }
 

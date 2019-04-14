@@ -8,15 +8,16 @@
 
 #import <CoreData/CoreData.h>
 #import "FavoriteNews+CoreDataClass.h"
+#import "News.h"
 
 @interface CoreDataHelper : NSObject
 
 + (instancetype)sharedInstance;
 
-- (BOOL)isFavorite:(NSString *)news_title;
+- (BOOL)isFavorite:(News *)news;
 - (NSMutableArray *)favorites;
-- (void)addToFavorite:(NSString *)news_title;
-- (void)removeFromFavorite:(NSString *)news_title;
+- (void)addToFavorite:(News *)news;
+- (void)removeFromFavorite:(News *)news;
 
 @end
 

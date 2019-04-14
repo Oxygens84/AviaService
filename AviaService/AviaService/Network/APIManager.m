@@ -7,6 +7,7 @@
 //
 
 #import "APIManager.h"
+#import "News.h"
 
 #define API_URL_PART1 @"https://newsapi.org/v2/everything?q=bitcoin&from="
 #define API_URL_PART2 @"&sortBy=publishedAt&apiKey=8be4c556b57b46c5843198a10be0239b"
@@ -15,7 +16,7 @@
 
 + (NSString*) getCurrentDate {
     NSDateFormatter *objDateformat = [[NSDateFormatter alloc] init];
-    [objDateformat setDateFormat:@"yyyy-MM-dd"];
+    [objDateformat setDateFormat:@"dd-MM-yyyy"];
     return [objDateformat stringFromDate:[NSDate date]];
 };
 
@@ -35,12 +36,19 @@
         NSLog(@"%@", response);
         if (response) {
             NSDictionary *json = [response valueForKey:@"articles"];
-            NSMutableArray *value = [json valueForKey: @"title"];
+            NSMutableArray *value = [[NSMutableArray alloc] init];
+            for (int i=0; i<20; i++) {
+                News *element = [[News alloc] initWith:[json valueForKey: @"title"][i]
+                                               content:[json valueForKey: @"content"][i]
+                                                 image:[json valueForKey: @"urlToImage"][i]
+                                                source:[[json valueForKey: @"source"] valueForKey: @"name"][i]];
+                [value addObject:element];
+            }
             dispatch_async(dispatch_get_main_queue(), ^{
                 completion(value);
             });
         }
-        // TODO add: content urlToImage  url  source.name publishedAt
+        // TODO add: content/description urlToImage  url  source.name publishedAt
     }];
 }
 

@@ -14,5 +14,8 @@
 + (NSFetchRequest<FavoriteNews *> *)fetchRequest;
 
 @property (nullable, nonatomic, copy) NSString *title;
+@property (nullable, nonatomic, copy) NSString *content;
+@property (nullable, nonatomic, copy) NSString *urlToImage;
+@property (nullable, nonatomic, copy) NSString *source;
 
 @end
