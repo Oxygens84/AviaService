@@ -65,9 +65,9 @@
     self.tableView = [[UITableView alloc] initWithFrame: self.view.bounds style: UITableViewStylePlain];
     
     if (isFavorites) {
-        self.title = @"Favorites";
+        self.title = NSLocalizedString(@"TITLE_FAVORITES", @"");
     } else {
-        self.title = [NSString stringWithFormat:@"%@ %@", @"NEWS ", [APIManager getCurrentDate]];
+        self.title = [NSString stringWithFormat:@"%@ %@",  NSLocalizedString(@"TITLE_NEWS", @""), [APIManager getCurrentDate]];
     }
     
     self.tableView.dataSource=self;
@@ -194,30 +194,30 @@
     //TODO actions for favorites
     if (!isFavorites) {
         
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"ACTIONS" message:@"Select an action for the news:" preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"TITLE_FOR_ACTIONS", @"") message:NSLocalizedString(@"MSG_FOR_ACTIONS", @"") preferredStyle:UIAlertControllerStyleActionSheet];
         
         UIAlertAction *favoriteAction;
         
         if ([[CoreDataHelper sharedInstance] isFavorite: [self.elements objectAtIndex:indexPath.row]]
             //|| (isFavorites)
             ) {
-            favoriteAction = [UIAlertAction actionWithTitle:@"Delete from favorites" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+            favoriteAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"ACTION_DEL_FROM_FAVORITES", @"") style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
                 [[CoreDataHelper sharedInstance] removeFromFavorite:[self.elements objectAtIndex:indexPath.row]];
                 if (self->isFavorites) {
                     [self.tableView reloadData];
                 }
             }];
         } else {
-            favoriteAction = [UIAlertAction actionWithTitle:@"Add to favorites" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            favoriteAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"ACTION_ADD_TO_FAVORITES", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 [[CoreDataHelper sharedInstance] addToFavorite:[self.elements objectAtIndex:indexPath.row]];
             }];
         }
         
         UIAlertAction *detailAction;
-        detailAction = [UIAlertAction actionWithTitle:@"Details" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        detailAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"ACTION_DETAILS", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             NewsDetailsViewController *anotherViewController = [[NewsDetailsViewController alloc] init];
             [self.navigationController pushViewController:anotherViewController animated:YES];
-            [anotherViewController setTitle:@"NEWS details"];
+            [anotherViewController setTitle: NSLocalizedString(@"TITLE_NEWS_DETAIL", @"")];
             News *someNews = [self.elements objectAtIndex:indexPath.row];
             anotherViewController.someNews = someNews;
             [UIView transitionFromView:self.view
@@ -227,7 +227,8 @@
                             completion:nil];
         }];
         
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"CANCEL" style:UIAlertActionStyleCancel handler:nil];
+        UIAlertAction *cancelAction =
+            [UIAlertAction actionWithTitle: NSLocalizedString(@"BTN_CANCEL", @"") style:UIAlertActionStyleCancel handler:nil];
         [alertController addAction:favoriteAction];
         [alertController addAction:detailAction];
         [alertController addAction:cancelAction];

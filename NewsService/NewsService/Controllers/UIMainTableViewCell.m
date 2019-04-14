@@ -41,17 +41,7 @@
     [self.contentView addSubview: self.image];
 }
 
-- (void) configEnterButtom {
-    self.enterButton = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH / 3.0 * 2, 0, SCREEN_WIDTH / 3.0 - OFFSET, OFFSET*2)];
-    [self.enterButton setTitle: @"Details" forState: UIControlStateNormal];
-    [self.enterButton setTitleColor: [UIColor whiteColor] forState: UIControlStateNormal];
-    [self.enterButton setBackgroundColor:[UIColor colorWithRed:100.0/255.0 green:135.0/255.0 blue:191.0/255.0 alpha:1.0]];
-    [self.enterButton.layer setCornerRadius:5];
-    [self.contentView addSubview: self.enterButton];
-}
-
 - (void)setFavoriteNews:(FavoriteNews *)favoriteNews {
-    //self.favoriteNews = favoriteNews;
     self.title.text = [NSString stringWithFormat:@"♥ %@", favoriteNews.title];
     [self.image setAlpha:0];
 }

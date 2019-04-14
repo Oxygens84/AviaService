@@ -33,8 +33,8 @@
     if (status == kCLAuthorizationStatusAuthorizedAlways || status == kCLAuthorizationStatusAuthorizedWhenInUse) {
         [self.locationManager startUpdatingLocation];
     } else if (status != kCLAuthorizationStatusNotDetermined) {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Упс!" message:@"Не удалось определить текущий город!" preferredStyle: UIAlertControllerStyleAlert];
-        [alertController addAction:[UIAlertAction actionWithTitle:@"Закрыть" style:(UIAlertActionStyleDefault) handler:nil]];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"MSG_OOPS", @"") message:NSLocalizedString(@"MSG_CITY_NOT_FOUND", @"") preferredStyle: UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"BTN_CLOSE", @"") style:(UIAlertActionStyleDefault) handler:nil]];
         [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alertController animated:YES completion:nil];
     }
 }

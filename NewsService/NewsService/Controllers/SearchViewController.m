@@ -64,7 +64,7 @@
 {
     NewsDetailsViewController *anotherViewController = [[NewsDetailsViewController alloc] init];
     [self.navigationController pushViewController:anotherViewController animated:YES];
-    [anotherViewController setTitle:@"NEWS details"];
+    //[anotherViewController setTitle:@"NEWS details"];
     anotherViewController.someNews = self.results[indexPath.row];
 }
 
