@@ -149,7 +149,11 @@
         if (![element.news_urlToImage isEqual:[NSNull null]]) {
             NSURL *url = [NSURL URLWithString:element.news_urlToImage];
             NSData *imageData = [[NSData alloc] initWithContentsOfURL:url];
-            cell.image.image = [[UIImage alloc] initWithData:imageData];
+            if (imageData != nil) {
+                cell.image.image = [[UIImage alloc] initWithData:imageData];
+            }  else {
+                [cell.image setAlpha:0];
+            }
         } else {
             [cell.image setAlpha:0];
         }
@@ -173,11 +177,12 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (isFavorites)
+    UIMainTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: CELL_ID];
+    if (isFavorites){
         return 60+20;
-    
+    }
     News *element = [self.elements objectAtIndex:indexPath.row];
-    if (![element.news_urlToImage isEqual:[NSNull null]]) {
+    if (![element.news_urlToImage isEqual:[NSNull null]] || cell.image != nil) {
         return 60 + SCREEN_WIDTH - (20);
     }
     return 60 + 20;
