@@ -76,8 +76,8 @@ CKDatabase *publicDatabase;
     }];
 }
 
-- (void)deleteRecordInCloud:(News *)recordNews {
-    CKRecordID *publicationRecordID = [[CKRecordID alloc] initWithRecordName:recordNews.news_title];
+- (void)deleteRecordInCloud:(NSString *)recordNews {
+    CKRecordID *publicationRecordID = [[CKRecordID alloc] initWithRecordName:recordNews];
     [publicDatabase deleteRecordWithID:publicationRecordID completionHandler:^(CKRecordID * _Nullable recordID, NSError * _Nullable error) {
         if (error) {
             NSLog(@"%@", error);
@@ -117,7 +117,15 @@ CKDatabase *publicDatabase;
     if (favorite) {
         [_managedObjectContext deleteObject:favorite];
         [self save];
-        [self deleteRecordInCloud:news];
+        [self deleteRecordInCloud:news.news_title];
+    }
+}
+
+- (void)deleteFromFavorite:(FavoriteNews *)favorite {
+    if (favorite) {
+        [self deleteRecordInCloud:favorite.title];
+        [_managedObjectContext deleteObject:favorite];
+        [self save];
     }
 }
 

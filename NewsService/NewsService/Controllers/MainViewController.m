@@ -73,8 +73,6 @@
     self.tableView.dataSource=self;
     self.tableView.delegate=self;
     
-    self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    
     if (!isFavorites) {
         [[APIManager sharedInstance] newsWithCompletion:^(NSMutableArray *articles){
             if (articles) {
@@ -87,9 +85,7 @@
         self.searchController.searchResultsUpdater = self;
         self.tableView.tableHeaderView = self.searchController.searchBar;
     }
-    
     [self.view addSubview: self.tableView];
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -98,6 +94,12 @@
     if (isFavorites) {
         self.elements = [[CoreDataHelper sharedInstance] favorites];
         [self.tableView reloadData];
+        [UIView transitionWithView:self.view duration:2
+                           options:UIViewAnimationOptionTransitionCurlDown
+                        animations:^ {}
+                        completion:^(BOOL finished){
+                            NSLog(@"Animations completed.");
+                        }];
     } else {
         [[APIManager sharedInstance] newsWithCompletion:^(NSMutableArray *articles){
             if (articles) {
@@ -106,13 +108,6 @@
             }
         }];
     }
-    
-    [UIView transitionWithView:self.view duration:2
-                       options:UIViewAnimationOptionTransitionCurlDown
-                    animations:^ {}
-                    completion:^(BOOL finished){
-                        NSLog(@"Animations completed.");
-                    }];
 }
 
 
@@ -126,7 +121,6 @@
             }
         }
         self.resultsController.results = tempArr;
-        //self.resultsController.results = [self.elements filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@", searchController.searchBar.text]];
         [self.resultsController update];
     }
 }
@@ -137,15 +131,16 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UIMainTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: CELL_ID];
+    UIMainTableViewCell *cell;
     if (!cell) {
         cell = [[UIMainTableViewCell alloc] initWithStyle: UITableViewCellStyleDefault reuseIdentifier: CELL_ID];
     }
     if (isFavorites) {
-        cell.favoriteNews = [self.elements objectAtIndex:indexPath.row];
+        cell.favoriteNews = self.elements[indexPath.row];
     } else {
         News *element = self.elements[indexPath.row];
         cell.title.text = [NSString stringWithFormat:@"%@", element.news_title];
+        cell.source.text = [NSString stringWithFormat:@"%@: %@", NSLocalizedString(@"LABEL_SOURCE", @""), element.news_source];
         if (![element.news_urlToImage isEqual:[NSNull null]]) {
             NSURL *url = [NSURL URLWithString:element.news_urlToImage];
             NSData *imageData = [[NSData alloc] initWithContentsOfURL:url];
@@ -157,60 +152,44 @@
         } else {
             [cell.image setAlpha:0];
         }
-    }    
-    cell.title.numberOfLines = 2;
+    }
     [cell.title sizeToFit];
     return cell;
 
 }
 
-/*
-- (CGFloat)heightForText:(NSString *)bodyText
-{
-    UIFont *cellFont = [UIFont systemFontOfSize:17];
-    CGSize constraintSize = CGSizeMake(200, MAXFLOAT);
-    CGSize labelSize = [bodyText sizeWithFont:cellFont constrainedToSize:constraintSize lineBreakMode:UILineBreakModeWordWrap];
-    CGFloat height = labelSize.height + 10;
-    return height;
-}
-*/
-
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UIMainTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: CELL_ID];
+    UIMainTableViewCell *cell;
     if (isFavorites){
-        return 60+20;
+        return 60 + 20;
     }
     News *element = [self.elements objectAtIndex:indexPath.row];
     if (![element.news_urlToImage isEqual:[NSNull null]] || cell.image != nil) {
         return 60 + SCREEN_WIDTH - (20);
     }
-    return 60 + 20;
+    return 60 + 20 + 20;
 }
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    //TODO actions for favorites
     if (!isFavorites) {
         
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"TITLE_FOR_ACTIONS", @"") message:NSLocalizedString(@"MSG_FOR_ACTIONS", @"") preferredStyle:UIAlertControllerStyleActionSheet];
         
         UIAlertAction *favoriteAction;
         
-        if ([[CoreDataHelper sharedInstance] isFavorite: [self.elements objectAtIndex:indexPath.row]]
-            //|| (isFavorites)
-            ) {
+        if ([[CoreDataHelper sharedInstance] isFavorite: [self.elements objectAtIndex:indexPath.row]]) {
             favoriteAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"ACTION_DEL_FROM_FAVORITES", @"") style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
                 [[CoreDataHelper sharedInstance] removeFromFavorite:[self.elements objectAtIndex:indexPath.row]];
-                if (self->isFavorites) {
-                    [self.tableView reloadData];
-                }
             }];
         } else {
             favoriteAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"ACTION_ADD_TO_FAVORITES", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 [[CoreDataHelper sharedInstance] addToFavorite:[self.elements objectAtIndex:indexPath.row]];
             }];
+            
+            
         }
         
         UIAlertAction *detailAction;
@@ -229,10 +208,22 @@
         
         UIAlertAction *cancelAction =
             [UIAlertAction actionWithTitle: NSLocalizedString(@"BTN_CANCEL", @"") style:UIAlertActionStyleCancel handler:nil];
-        [alertController addAction:favoriteAction];
+        
         [alertController addAction:detailAction];
+        [alertController addAction:favoriteAction];        
         [alertController addAction:cancelAction];
         [self presentViewController:alertController animated:YES completion:nil];
+    }
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (isFavorites) {
+        [[CoreDataHelper sharedInstance] deleteFromFavorite:[self.elements objectAtIndex:indexPath.row]];
+        
+        NSMutableArray *copy= [self.elements mutableCopy];
+        [copy removeObjectAtIndex:indexPath.row];
+        self.elements=[copy mutableCopy];
+        [self.tableView reloadData];
     }
 }
 

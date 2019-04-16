@@ -36,7 +36,7 @@
 }
 
 - (void) configBackground {
-    [self.view setBackgroundColor: [UIColor colorWithRed:100.0/255.0 green:135.0/255.0 blue:191.0/255.0 alpha:1.0]];
+    [self.view setBackgroundColor: [UIColor whiteColor]];
 }
 
 - (void) configText {
@@ -48,7 +48,7 @@
     } else {
         [self.newsContent setText: self.someNews.news_title];
     }
-    [self.newsContent setTextColor: [UIColor whiteColor]];
+    [self.newsContent setTextColor: [UIColor blackColor]];
     [self.view addSubview: self.newsContent];
 }
 
@@ -61,7 +61,7 @@
     } else {
         [self.newsSource setText: NSLocalizedString(@"DEFAULT_SOURCE", @"")];
     }
-    [self.newsSource setTextColor: [UIColor whiteColor]];
+    [self.newsSource setTextColor: [UIColor darkGrayColor]];
     [self.view addSubview: self.newsSource];
 }
 

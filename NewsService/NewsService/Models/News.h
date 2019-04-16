@@ -18,7 +18,8 @@
 - (instancetype)initWith: (NSString *)title
                  content: (NSString *)content
                    image: (NSString *)image
-                  source: (NSString *)source;
+                  source: (NSString *)source
+                     url: (NSString *)url;
 
 //content urlToImage  url  source.name publishedAt
 @end

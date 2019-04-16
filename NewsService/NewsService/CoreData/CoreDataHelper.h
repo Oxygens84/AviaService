@@ -18,6 +18,7 @@
 - (NSMutableArray *)favorites;
 - (void)addToFavorite:(News *)news;
 - (void)removeFromFavorite:(News *)news;
+- (void)deleteFromFavorite:(FavoriteNews *)favorite;
 
 @end
 
