@@ -13,12 +13,13 @@
 - (instancetype)initWith: (NSString *)title
                  content: (NSString *)content
                    image: (NSString *)image
-                  source: (NSString *)source{
+                  source: (NSString *)source
+                     url: (NSString *)url{
     self = [super init];
     if (self)
     {
         self.news_title = title;
-        self.news_content = content;
+        self.news_content = [NSString stringWithFormat:@"%@\n\n%@", content, url] ;
         self.news_urlToImage = image;
         self.news_source = source;
     }

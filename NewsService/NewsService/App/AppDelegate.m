@@ -26,6 +26,13 @@
     self.window.rootViewController = tabBarController;
     [self.window makeKeyAndVisible];
     
+    NSURL *ubiq = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
+    if (ubiq) {
+        NSLog(@"AppDelegate: iCloud access");
+    } else {
+        NSLog(@"AppDelegate: No iCloud access (either you are using simulator or, if you are on your phone, you should check settings");
+    }
+    
     return YES;
 }
 

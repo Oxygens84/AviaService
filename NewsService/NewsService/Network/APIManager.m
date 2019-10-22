@@ -41,14 +41,14 @@
                 News *element = [[News alloc] initWith:[json valueForKey: @"title"][i]
                                                content:[json valueForKey: @"content"][i]
                                                  image:[json valueForKey: @"urlToImage"][i]
-                                                source:[[json valueForKey: @"source"] valueForKey: @"name"][i]];
+                                                source:[[json valueForKey: @"source"] valueForKey: @"name"][i]
+                                                   url:[json valueForKey: @"url"][i]];
                 [value addObject:element];
             }
             dispatch_async(dispatch_get_main_queue(), ^{
                 completion(value);
             });
         }
-        // TODO add: content/description urlToImage  url  source.name publishedAt
     }];
 }
 

@@ -8,6 +8,7 @@
 
 #import "CoreDataHelper.h"
 #import "News.h"
+#import "CloudKit/CloudKit.h"
 
 @interface CoreDataHelper ()
 @property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
@@ -17,8 +18,14 @@
 
 @implementation CoreDataHelper
 
+CKContainer *container;
+CKDatabase *publicDatabase;
+
 + (instancetype)sharedInstance
 {
+    container = [CKContainer defaultContainer];
+    publicDatabase = [container publicCloudDatabase];
+    
     static CoreDataHelper *instance;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -53,6 +60,33 @@
     }
 }
 
+- (void)saveRecordInCloud:(News *)recordNews {
+    CKRecordID *publicationRecordID = [[CKRecordID alloc] initWithRecordName:recordNews.news_title];
+    CKRecord *publicationRecord = [[CKRecord alloc] initWithRecordType:@"Publication" recordID:publicationRecordID];
+    publicationRecord[@"newsTitle"] = recordNews.news_title;
+    publicationRecord[@"newsContent"] = recordNews.news_content;
+    publicationRecord[@"newsImage"] = recordNews.news_urlToImage;
+    publicationRecord[@"newsSource"] = recordNews.news_source;
+    [publicDatabase saveRecord:publicationRecord completionHandler:^(CKRecord * _Nullable record, NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"%@", error);
+            return;
+        }
+        NSLog(@"%@", record);
+    }];
+}
+
+- (void)deleteRecordInCloud:(NSString *)recordNews {
+    CKRecordID *publicationRecordID = [[CKRecordID alloc] initWithRecordName:recordNews];
+    [publicDatabase deleteRecordWithID:publicationRecordID completionHandler:^(CKRecordID * _Nullable recordID, NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"%@", error);
+            return;
+        }
+        NSLog(@"%@", recordID);
+    }];
+}
+
 - (FavoriteNews *)favoriteFromTicket:(News *)news {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"FavoriteNews"];
     request.predicate = [NSPredicate predicateWithFormat:@"title == %@", news.news_title];
@@ -73,13 +107,23 @@
     if (![news.news_source isEqual:[NSNull null]]) {
         favorite.source = news.news_source;
     }
-    //favorite.created = [NSDate date];
+    
     [self save];
+    [self saveRecordInCloud:news];
 }
 
 - (void)removeFromFavorite:(News *)news {
     FavoriteNews *favorite = [self favoriteFromTicket:news];
     if (favorite) {
+        [_managedObjectContext deleteObject:favorite];
+        [self save];
+        [self deleteRecordInCloud:news.news_title];
+    }
+}
+
+- (void)deleteFromFavorite:(FavoriteNews *)favorite {
+    if (favorite) {
+        [self deleteRecordInCloud:favorite.title];
         [_managedObjectContext deleteObject:favorite];
         [self save];
     }

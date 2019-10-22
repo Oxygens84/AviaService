@@ -22,7 +22,7 @@
 {
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
-        self.title = @"MAP";
+        self.title = NSLocalizedString(@"TITLE_MAP", @"");
     }
     return self;
 }

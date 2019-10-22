@@ -33,11 +33,10 @@
     [self configBackground];
     [self configText];
     [self configSource];
-    //[self configClickMeButtom];
 }
 
 - (void) configBackground {
-    [self.view setBackgroundColor: [UIColor colorWithRed:100.0/255.0 green:135.0/255.0 blue:191.0/255.0 alpha:1.0]];
+    [self.view setBackgroundColor: [UIColor whiteColor]];
 }
 
 - (void) configText {
@@ -49,7 +48,7 @@
     } else {
         [self.newsContent setText: self.someNews.news_title];
     }
-    [self.newsContent setTextColor: [UIColor whiteColor]];
+    [self.newsContent setTextColor: [UIColor blackColor]];
     [self.view addSubview: self.newsContent];
 }
 
@@ -60,25 +59,15 @@
     if (![self.someNews.news_source isEqual:[NSNull null]]) {
         [self.newsSource setText: self.someNews.news_source];
     } else {
-        [self.newsSource setText: @"Anonymous source"];
+        [self.newsSource setText: NSLocalizedString(@"DEFAULT_SOURCE", @"")];
     }
-    [self.newsSource setTextColor: [UIColor whiteColor]];
+    [self.newsSource setTextColor: [UIColor darkGrayColor]];
     [self.view addSubview: self.newsSource];
 }
 
-- (void) configClickMeButtom {
-    self.completeReadingButton = [[UIButton alloc] initWithFrame:CGRectMake(OFFSET, SCREEN_HEIGHT-90, SCREEN_WIDTH-(2*OFFSET), 50)];
-    [self.completeReadingButton setTitle: @"I've read this news!" forState: UIControlStateNormal];
-    [self.completeReadingButton setTitleColor: [UIColor redColor] forState: UIControlStateNormal];
-    [self.completeReadingButton setBackgroundColor:[UIColor whiteColor]];
-    [self.completeReadingButton.layer setCornerRadius:5];
-    [self.completeReadingButton addTarget: self action: @selector(clickButtonTap) forControlEvents: UIControlEventTouchUpInside];
-    [self.view addSubview: self.completeReadingButton];
-}
-
 - (void)displayMessage:(NSString *)message {
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Details" message:message preferredStyle:(UIAlertControllerStyleAlert)];
-    UIAlertAction *action = [UIAlertAction actionWithTitle:@"OK" style:(UIAlertActionStyleDefault) handler:^(UIAlertAction * _Nonnull action) {}];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"ACTION_DETAILS", @"") message:message preferredStyle:(UIAlertControllerStyleAlert)];
+    UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"BTN_OK", @"") style:(UIAlertActionStyleDefault) handler:^(UIAlertAction * _Nonnull action) {}];
     [alertController addAction:action];
     [self presentViewController:alertController animated:YES completion:nil];
 }

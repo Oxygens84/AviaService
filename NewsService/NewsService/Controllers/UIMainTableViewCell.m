@@ -24,6 +24,7 @@
     if (self)
     {
         [self configTitle];
+        [self configSource];
         [self configImage];
     }
     return self;
@@ -33,25 +34,24 @@
     self.title = [[UILabel alloc] initWithFrame:CGRectMake(OFFSET, OFFSET, SCREEN_WIDTH - (OFFSET*2), OFFSET*2)];
     self.title.textAlignment = NSTextAlignmentLeft;
     self.title.textColor = [UIColor blackColor];
+    self.title.numberOfLines = 2;
     [self.contentView addSubview: self.title];
 }
 
+- (void) configSource {
+    self.source = [[UILabel alloc] initWithFrame:CGRectMake(OFFSET, OFFSET*3, SCREEN_WIDTH - (OFFSET*2), OFFSET*2)];
+    self.source.textAlignment = NSTextAlignmentRight;
+    self.source.textColor = [UIColor darkGrayColor];
+    self.source.numberOfLines = 1;
+    [self.contentView addSubview: self.source];
+}
+
 - (void) configImage {
-    self.image = [[UIImageView alloc] initWithFrame:CGRectMake(OFFSET, 60.0 + OFFSET , SCREEN_WIDTH - (OFFSET*2), SCREEN_WIDTH - (OFFSET*2))];
+    self.image = [[UIImageView alloc] initWithFrame:CGRectMake(OFFSET, 60.0 + OFFSET*3 , SCREEN_WIDTH - (OFFSET*2), SCREEN_WIDTH - (OFFSET*4))];
     [self.contentView addSubview: self.image];
 }
 
-- (void) configEnterButtom {
-    self.enterButton = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH / 3.0 * 2, 0, SCREEN_WIDTH / 3.0 - OFFSET, OFFSET*2)];
-    [self.enterButton setTitle: @"Details" forState: UIControlStateNormal];
-    [self.enterButton setTitleColor: [UIColor whiteColor] forState: UIControlStateNormal];
-    [self.enterButton setBackgroundColor:[UIColor colorWithRed:100.0/255.0 green:135.0/255.0 blue:191.0/255.0 alpha:1.0]];
-    [self.enterButton.layer setCornerRadius:5];
-    [self.contentView addSubview: self.enterButton];
-}
-
 - (void)setFavoriteNews:(FavoriteNews *)favoriteNews {
-    //self.favoriteNews = favoriteNews;
     self.title.text = [NSString stringWithFormat:@"♥ %@", favoriteNews.title];
     [self.image setAlpha:0];
 }

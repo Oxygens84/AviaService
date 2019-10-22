@@ -1,0 +1,28 @@
+/* 
+  Localizable.strings
+  NewsService
+
+  Created by Oxana Lobysheva on 15/04/2019.
+  Copyright © 2019 Oxana Lobysheva. All rights reserved.
+*/
+
+"BTN_OK" = "OK";
+"BTN_CANCEL" = "ANNULLA";
+"BTN_CLOSE" = "CHIUDI";
+
+"TITLE_NEWS" = "NOTIZIE ";
+"TITLE_NEWS_DETAIL" = "NOTIZIA";
+"TITLE_FOR_ACTIONS" = "AZIONI";
+"TITLE_FAVORITES" = "PREFERITI";
+"TITLE_MAP" = "MAPPA";
+
+"ACTION_DETAILS" = "Mostra dettagli";
+"ACTION_ADD_TO_FAVORITES" = "Aggiungi a preferiti";
+"ACTION_DEL_FROM_FAVORITES" = "Rimuovi da preferiti";
+
+"LABEL_SOURCE" = "Fonte: ";
+"DEFAULT_SOURCE" = "Anonymous fonte";
+
+"MSG_FOR_ACTIONS" = "Seleziona un'azione per la notizia:";
+"MSG_CITY_NOT_FOUND" = "Scusa! Non riuscemo a rovare la città!";
+"MSG_OOPS" = "Oops!";

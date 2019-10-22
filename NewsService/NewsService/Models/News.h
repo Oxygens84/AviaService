@@ -10,7 +10,7 @@
 
 @interface News : NSObject
 
-@property (nonatomic, strong) NSString *news_title;
+@property (nonatomic, strong, nonnull) NSString *news_title;
 @property (nonatomic, strong) NSString *news_content;
 @property (nonatomic, strong) NSString *news_urlToImage;
 @property (nonatomic, strong) NSString *news_source;
@@ -18,7 +18,8 @@
 - (instancetype)initWith: (NSString *)title
                  content: (NSString *)content
                    image: (NSString *)image
-                  source: (NSString *)source;
+                  source: (NSString *)source
+                     url: (NSString *)url;
 
 //content urlToImage  url  source.name publishedAt
 @end
